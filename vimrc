@@ -61,6 +61,7 @@ set cursorline  " 光标横线
 set cursorcolumn  " 光标竖线
 highlight cursorcolumn ctermfg=6
 
+"<cr> 相当于按回车键
 map <F2> :vertical resize +5 <cr>
 map <F3> :vertical resize -5 <cr>
 map <F4> :resize +5 <cr>
