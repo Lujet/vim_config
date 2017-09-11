@@ -1,5 +1,4 @@
 
-CESHI
 set nocompatible     " 关闭 vi 兼容模式        
 set backspace=indent,eol,start
 
