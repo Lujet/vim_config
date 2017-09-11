@@ -85,3 +85,4 @@ au BufNewFile,BufRead *.js, *.html, *.css
 普通模式：o 在光标所在行的下一行进入插入模式
 
 测试
+测试 
