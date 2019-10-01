@@ -1,85 +1,192 @@
 
-set nocompatible     " 关闭 vi 兼容模式        
-set backspace=indent,eol,start
 
-" 状态栏信息
-"set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
-set statusline=%F%m%r\%<[POS=%l,%v][%p%%]\%-16{strftime(\"%Y-%m-%d\ %H:%M\")}\%Y
-" %F 缓冲区的文件完整路径
-" %m 如果缓冲区已修改则表示为 [+]
-" %r 如果缓冲区为只读则表示为 [RO]
-" %< 状态栏过长时从那里换行，默认从行首
-" %l 行号
-" %v 列号
-" %p 光标所在行的百分比
-" %Y 缓冲区的文件类型
+" ----------------------------------------ui-----------------------------------------" syntax on " color scheme
+" color solarized
 
-set laststatus=2         " 倒数第二行
-highlight statusline ctermbg=black ctermfg=white
-
-
-set fencs=utf-8,gb2312,gbk    
-set number
+" highlight current line
+au WinLeave * set nocursorline nocursorcolumn
+au WinEnter * set cursorline cursorcolumn
+set cursorline cursorcolumn
+hi CursorColumn cterm=NONE ctermbg=darkgray ctermfg=white guibg=darkred guifg=white
+" search
 set hlsearch
-" 逐步搜索
 set incsearch
+"set highlight 	" conflict with highlight current line
+set ignorecase
+set smartcase
 
-" 语法高亮
-syntax on
-
-au BufNewFile,BufRead *
-\ set tabstop=4 |
-\ set softtabstop=4 |
-\ set shiftwidth=4 |
-\ set expandtab |
-\ set autoindent |
-\ set fileformat=unix |
-\ set list listchars=tab:>-
-
-" 选择显示第 80 列竖线的文件类型
-au BufNewFile,BufRead *.c,*.py
-\ set colorcolumn=80
-" 标尺列背景色和文字颜色(这里也可以使用数字)
-highlight ColorColumn ctermbg=green ctermfg=black
-" 0     1   2   3   4   5   6   7   8   ...       
-" 黑    红  绿  黄  蓝  粉  青  白  灰  ...
-
-set splitbelow
-" 水平分屏新窗口在下面
-set splitright
-" 竖直分屏新窗口在右面
-
-" 忽略编译文件
-set wildignore=*.o,*~,*.pyc
-
-set term=xterm-256color
-set background=light "浅色
-"set background=dark "深色
-
-set cursorline  " 光标横线
-set cursorcolumn  " 光标竖线
-highlight cursorcolumn ctermfg=6
-
-"<cr> 相当于按回车键
-map <F2> :vertical resize +5 <cr>
-map <F3> :vertical resize -5 <cr>
-map <F4> :resize +5 <cr>
-map <F5> :resize -5 <cr>
+" ----------------------------------------ui-----------------------------------------"
 
 
-set noignorecase "不忽略大小写的查找
-"set ignorecase
 
-" 搜索的单词太长，可以在普通模式下光标移动到单词上，然后按 * 或 # 即可进行全局搜索
+" ------------------------------------editor-----------------------------------------"
+set cc=88
+set history=10000
+set ruler
+set nocompatible
+set nofoldenable                    " disable folding"
+set confirm                         " prompt when existing from an unsaved file
+set backspace=indent,eol,start      " More powerful backspacing
+set t_Co=256                        " Explicitly tell vim that the terminal has 256 colors "
+" set mouse=a                         " use mouse in all modes
+set report=0                        " always report number of lines changed                "
+set nowrap                          " dont wrap lines
+set scrolloff=5                     " 5 lines above/below cursor when scrolling
+set number                          " show line numbers
+set showmatch                       " show matching bracket (briefly jump)
+set showcmd                         " show typed command in status bar
+set title                           " show file in titlebar
+set laststatus=2                    " use 2 lines for the status bar
+set matchtime=2                     " show matching bracket for 0.2 seconds
+set matchpairs+=<:>                 " specially for html
+" set relativenumber
+set hidden
 
-" 保存并退出的快捷键 ZZ
-" !ls 不用退出 vim 执行 shell 命令
-" 3,5s/^/#/g 3-5 行行首加 # 号
 
-au BufNewFile,BufRead *.js, *.html, *.css
-\ set tabstop=2
-\ set softtabstop=2
-\ set shiftwidth=2
+set shell=/bin/sh
+" ------------------------------------editor-----------------------------------------"
 
-普通模式：o 在光标所在行的下一行进入插入模式
+
+" ------------------------------------code-----------------------------------------"
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 textwidth=120
+" ------------------------------------code-----------------------------------------"
+
+" ------------------------------------indent-----------------------------------------"
+set autoindent
+set smartindent     " indent when
+set tabstop=4       " tab width
+set softtabstop=4   " backspace
+set shiftwidth=4    " indent width
+set textwidth=79
+set smarttab
+set ts=4
+"set expandtab       " expand tab to space
+
+
+" nmap <F3> :GundoToggle<CR>
+map <F2> :vertical resize +5 <CR>
+map <F3> :vertical resize -5 <CR>
+map <F4> :resize -5 <CR>
+map <F5> :resize +5 <CR>
+map <F6> :Vexplore <CR>
+" paste plain test 
+set pastetoggle=<F7>
+"nmap <F4> :IndentGuidesToggle<cr>
+nmap  <D-/> :
+nnoremap <leader>a :Ack
+nnoremap <leader>v V`]
+"------------------
+" Useful Functions
+"------------------
+" easier navigation between split windows
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+
+map <up>    <nop>
+map <down>  <nop>
+map <left>  <nop>
+map <right> <nop>
+
+
+" C-* 在可是模式下查找当前选中的文本, e而不是光标所在位置的单词. pratical vim Page203
+xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
+xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
+function! s:VSetSearch(cmdtype)
+	let temp = @s
+	norm! gv"sy
+	let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '//n', 'g')
+	let @s = temp
+endfunction
+" -----------------------------------plugins-----------------------------------------"
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+
+" Make sure you use single quotes
+
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+Plug 'junegunn/vim-easy-align'
+
+" Any valid git URL is allowed
+Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+
+" Multiple Plug commands can be written in a single line using | separators
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+
+" On-demand loading
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+
+" Using a non-master branch
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+
+" Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
+Plug 'fatih/vim-go', { 'tag': '*' }
+
+" Plugin options
+Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
+
+" Plugin outside ~/.vim/plugged with post-update hook
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+" 括号补全
+Plug 'Raimondi/delimitMate'
+
+
+" coc.nvim
+Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
+
+
+" ui
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+
+" tag
+Plug 'majutsushi/tagbar'
+
+" Unmanaged plugin (manually installed and updated)
+Plug '~/my-prototype-plugin'
+
+Plug 'tomlion/vim-solidity'
+
+" Initialize plugin system
+call plug#end()
+
+" -----------------------------------plugins-----------------------------------------"
+"
+"
+"
+"
+"
+" Nerd Tree
+"autocmd vimenter * NERDTree 
+let NERDChristmasTree=0
+let NERDTreeWinSize=30
+let NERDTreeChDirMode=2
+let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
+let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
+let NERDTreeShowBookmarks=1
+let NERDTreeWinPos = "left"
+let g:NERDTreeShowLineNumbers=1  " 是否显示行号
+let g:NERDTreeHidden=0           " 不显示隐藏文件
+let NERDTreeMinimalUI = 1
+nmap <F6> :NERDTreeToggle<CR>
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+
+
+
+" Tagbar
+let g:tagbar_left=1
+let g:tagbar_width=30
+let g:tagbar_autofocus = 1
+let g:tagbar_sort = 0
+let g:tagbar_compact = 1
+let g:tagbar_ctags_bin='/usr/bin/ctags'
+nmap <F8> :TagbarToggle<cr>
 
